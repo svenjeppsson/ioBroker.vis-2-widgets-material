@@ -1028,7 +1028,7 @@ class Switches extends BlindsBase {
                         {
                             name: 'ct_min',
                             type: 'number',
-                            min: 500,
+                            min: 270,
                             max: 10000,
                             label: 'color_temperature_min',
                             hidden: (data, index) =>
@@ -1040,7 +1040,7 @@ class Switches extends BlindsBase {
                         {
                             name: 'ct_max',
                             type: 'number',
-                            min: 500,
+                            min: 270,
                             max: 10000,
                             label: 'color_temperature_max',
                             hidden: (data, index) =>

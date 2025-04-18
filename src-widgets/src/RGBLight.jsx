@@ -248,7 +248,7 @@ class RGBLight extends Generic {
                             type: 'select',
                             noTranslation: true,
                             options: [
-                                'rgb', 'rgbw', 'r/g/b', 'r/g/b/w', 'hue/sat/lum', 'ct',
+                                'rgb', 'rgbw', 'r/g/b', 'r/g/b/w', 'hue/sat/lum', 'ct','rgb/ct',
                             ],
                             onChange: loadStates,
                         },
@@ -256,7 +256,7 @@ class RGBLight extends Generic {
                             name: 'rgb',
                             type: 'id',
                             label: 'rgb',
-                            hidden: data => data.rgbType !== 'rgb' && data.rgbType !== 'rgbw',
+                            hidden: data => data.rgbType !== 'rgb' && data.rgbType !== 'rgbw' && data.rgbType !== 'rgb/ct',
                             onChange: loadStates,
                         },
                         {
@@ -291,24 +291,24 @@ class RGBLight extends Generic {
                             name: 'color_temperature',
                             type: 'id',
                             label: 'color_temperature',
-                            hidden: data => data.rgbType !== 'ct',
+                            hidden: data => data.rgbType !== 'ct' && data.rgbType !== 'rgb/ct',
                             onChange: loadStates,
                         },
                         {
                             name: 'ct_min',
                             type: 'number',
-                            min: 500,
+                            min: 270,
                             max: 10000,
                             label: 'color_temperature_min',
-                            hidden: data => data.rgbType !== 'ct' || !data.color_temperature,
+                            hidden: data => (data.rgbType !== 'ct' && data.rgbType !== 'rgb/ct') || !data.color_temperature,
                         },
                         {
                             name: 'ct_max',
                             type: 'number',
-                            min: 500,
+                            min: 270,
                             max: 10000,
                             label: 'color_temperature_max',
-                            hidden: data => data.rgbType !== 'ct' || !data.color_temperature,
+                            hidden: data => (data.rgbType !== 'ct' && data.rgbType !== 'rgb/ct') || !data.color_temperature,
                         },
                         {
                             name: 'hue',
@@ -335,7 +335,7 @@ class RGBLight extends Generic {
                             name: 'hideBrightness',
                             type: 'checkbox',
                             label: 'hideBrightness',
-                            hidden: data => data.rgbType !== 'rgb' && data.rgbType !== 'rgbw' && data.rgbType !== 'r/g/b' && data.rgbType !== 'r/g/b/w',
+                            hidden: data => data.rgbType !== 'rgb' && data.rgbType !== 'rgbw' && data.rgbType !== 'r/g/b' && data.rgbType !== 'r/g/b/w ' && data.rgbType !== 'rgb/ct',
                             onChange: loadStates,
                         },
                         {
@@ -350,7 +350,7 @@ class RGBLight extends Generic {
                             name: 'noRgbPalette',
                             type: 'checkbox',
                             label: 'noRgbPalette',
-                            hidden: data => data.rgbType !== 'rgb' && data.rgbType !== 'rgbw' && data.rgbType !== 'r/g/b' && data.rgbType !== 'r/g/b/w',
+                            hidden: data => data.rgbType !== 'rgb' && data.rgbType !== 'rgbw' && data.rgbType !== 'r/g/b' && data.rgbType !== 'r/g/b/w' && data.rgbType !== 'rgb/ct',
                             onChange: loadStates,
                         },
                         {
@@ -648,7 +648,7 @@ class RGBLight extends Generic {
     };
 
     rgbIsRgb = () => {
-        if ((this.state.rxData.rgbType === 'rgb' || this.state.rxData.rgbType === 'rgbw')
+        if ((this.state.rxData.rgbType === 'rgb' || this.state.rxData.rgbType === 'rgb/ct'  || this.state.rxData.rgbType === 'rgbw')
         && this.state.rxData.rgb) {
             return true;
         }
@@ -790,7 +790,7 @@ class RGBLight extends Generic {
     }
 
     rgbRenderColorTemperature(whiteMode) {
-        if (this.state.rxData.rgbType !== 'ct' || whiteMode === true) {
+        if ((this.state.rxData.rgbType !== 'ct' && this.state.rxData.rgbType !== 'rgb/ct') || whiteMode === true) {
             return null;
         }
         return <div style={styles.rgbSliderContainer}>
